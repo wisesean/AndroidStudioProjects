@@ -1,0 +1,37 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.wisesean.heartbeat.alarm">
+
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <application android:allowBackup="true"
+        android:label="@string/app_name"
+        android:icon="@drawable/ic_alarm_lin"
+        android:theme="@style/AppTheme.One">
+
+        <provider android:name="AlarmProvider"
+            android:authorities="com.wisesean.heartbeat.alarm"
+            android:exported="false" />
+
+        <activity android:name=".ActivityOne"
+            android:theme="@style/AppTheme.Two">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"></action>
+                <category android:name="android.intent.category.LAUNCHER"></category>
+            </intent-filter>
+        </activity>
+        <activity android:name=".AlarmActivity"></activity>
+        <activity android:name=".SetAlarm"></activity>
+        <receiver android:name=".AalarmReceive">
+            <intent-filter>
+                <action android:name="com.foxmail.wisesean.ALARM_ALERT" />
+            </intent-filter>
+        </receiver>
+    </application>
+
+</manifest>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <ListView
+        android:id="@+id/listView_alrm_list"
+        android:layout_width="match_parent"
+        android:layout_height="407dp"
+        android:layout_weight="0.74" >
+    </ListView>
+
+    <ImageButton
+        android:id="@+id/alerm_btn_add"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="alarmAlert"
+        android:src="@drawable/ic_clock_add_alarm_selected" />
+
+</LinearLayout>

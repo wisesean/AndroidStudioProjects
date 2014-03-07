@@ -1,0 +1,13 @@
+<resources>
+
+    <style name="AppTheme.One" parent="android:Theme.Holo.Light.DarkActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <style name="AppTheme.Two" parent="android:Theme.Holo.Light.DarkActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@drawable/bc_alarm</item>
+        <item name="android:windowFullscreen">false</item>
+    </style>
+</resources>

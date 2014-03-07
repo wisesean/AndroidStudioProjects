@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+        android:title="@string/set_alarm">
+    <CheckBoxPreference android:key="enabled"
+        android:persistent="false"
+        android:title="@string/enable_alarm" />
+    <Preference android:key="time"
+        android:persistent="false"
+        android:title="@string/time"/>
+    <CheckBoxPreference android:key="vibrate"
+        android:persistent="false"
+        android:title="@string/alarm_vibrate"/>
+    <EditTextPreference android:key="label"
+        android:persistent="false"
+        android:title="@string/label"
+        android:dialogTitle="@string/label" />
+</PreferenceScreen>
