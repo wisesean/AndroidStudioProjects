@@ -1,60 +1,56 @@
 package com.wisesean.heartbeat.alarm;
 
 import android.app.Activity;
-import android.app.TimePickerDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.v4.app.FragmentActivity;
 import android.text.format.DateFormat;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.wisesean.heartbeat.dslv.SlideCutListView;
+import com.wisesean.heartbeat.time.RadialPickerLayout;
+import com.wisesean.heartbeat.util.Util;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import com.wisesean.heartbeat.time.TimePickerDialog;
 
 /**
  * Created by wisesean on 14-2-25.
  */
-public class ActivityOne extends Activity implements
+public class ActivityOne extends FragmentActivity implements
         TimePickerDialog.OnTimeSetListener, SlideCutListView.RemoveListener {
-
-//   private ListView listView;
    private SlideCutListView slideCutListView;
    private SimpleAdapter adapter;
-   private List<Map<String,Object>> listResult;
+   public List<Map<String,Object>> listResult;
+   private TimePickerDialog timePickerDialog;
+   public static final String TIMEPICKER_TAG = "timepicker";
    @Override
    protected void onCreate(Bundle savedInstanceState) {
        super.onCreate(savedInstanceState);
-       //在setContentView之前请求窗口特征
-       requestWindowFeature(Window.FEATURE_RIGHT_ICON);
        setContentView(R.layout.main);
 
-       init();
+       final Calendar calendar = Calendar.getInstance();
+       timePickerDialog = TimePickerDialog.newInstance(this,
+               calendar.get(Calendar.HOUR_OF_DAY) ,calendar.get(Calendar.MINUTE), false, false);
 
-//       listView = (ListView) findViewById(R.id.listView_alarm_list);
-//       SimpleAdapter adapter = new SimpleAdapter(this,getData(),R.layout.desk_clock,
-//               new String[]{"time","tag","alarm_ic_list"},
-//               new int[]{R.id.time,R.id.tag,R.id.alarm_ic_list});
-//       listView.setAdapter(adapter);
-//       listView.setVerticalScrollBarEnabled(true);
+       init();
    }
 
     private void init() {
+        TextView text_date = (TextView) findViewById(R.id.text_date);
+        text_date.setText(Util.getWeekOfDate());
+
         slideCutListView = (SlideCutListView) findViewById(R.id.slideCutListView);
         slideCutListView.setRemoveListener(this);
 
@@ -67,8 +63,7 @@ public class ActivityOne extends Activity implements
         slideCutListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
 
             }
         });
@@ -116,51 +111,27 @@ public class ActivityOne extends Activity implements
         return list;
     }
 
-    private class CustomAdapter extends ArrayAdapter<String> {
-        public CustomAdapter(Context context, int layout, int resId, String[] items) {
-            super(context, layout, resId, items);
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            View row = convertView;
-            if(row == null) {
-                row = getLayoutInflater().inflate(R.layout.custom_row,parent,false);
-            }
-
-            String item = getItem(position);
-            ImageView left = (ImageView)row.findViewById(R.id.leftimage);
-            ImageView right = (ImageView)row.findViewById(R.id.rightimage);
-            TextView text = (TextView)row.findViewById(R.id.line1);
-
-            left.setImageResource(R.drawable.ic_clock_alarm_on);
-            right.setImageResource(R.drawable.ic_clock_alarm_off);
-            text.setText(item);
-
-            return row;
-        }
-    }
-
     public void addAlarm(View view) {
-        showTimePicker();
+        timePickerDialog.show(getSupportFragmentManager(), TIMEPICKER_TAG);
     }
 
-    private void showTimePicker() {
-        new MyTimePickerDialog(this, Calendar.HOUR_OF_DAY , Calendar.MINUTE,
-                DateFormat.is24HourFormat(this)).show();
-    }
-
-    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+    public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
         Alarm alarm = new Alarm();
         alarm.enabled = true;
         alarm.hour = hourOfDay;
         alarm.minutes = minute;
-
         alarm.interval = 0;
-
-        long time = Alarms.addAlarm(this, alarm);
-
-        popAlarmSetToast(this, time);
+        if(alarm.alert == null) {
+            alarm.alert = Settings.System.DEFAULT_RINGTONE_URI;
+        }
+        Object[] res = Alarms.addAlarm(this, alarm);
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("id",res[0]);
+        map.put("time", String.format("%02d",hourOfDay)+":"+String.format("%02d",minute));
+        map.put("alarm_ic_list", R.drawable.ic_lock_idle_alarm_saver);
+        listResult.add(map);
+        popAlarmSetToast(this, Long.parseLong(String.valueOf(res[1])));
+        this.adapter.notifyDataSetChanged();
     }
 
     static void popAlarmSetToast(Context context, int hour, int minute,

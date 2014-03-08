@@ -157,7 +157,8 @@ public class SetAlarm extends PreferenceActivity implements
 
 		long time;
 		if (alarm.id == -1) {
-			time = Alarms.addAlarm(this, alarm);
+			Object[] res = Alarms.addAlarm(this, alarm);
+            time = Long.parseLong(String.valueOf(res[1]));
 			mId = alarm.id;
 		} else {
 			time = Alarms.setAlarm(this, alarm);

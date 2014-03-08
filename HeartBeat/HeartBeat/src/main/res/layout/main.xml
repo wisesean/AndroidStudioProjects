@@ -7,94 +7,101 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
-        <FrameLayout
+        <RelativeLayout
+            android:id="@+id/relative_title"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="1dp">
 
-            <RelativeLayout
+            <ImageView
+                android:id="@+id/image_title"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentLeft="true"
+                android:src="@drawable/ic_alarm_lin" />
+
+            <TextView
+                android:id="@+id/text_alarm_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/image_title"
+                android:text="@string/app_name" />
+
+            <TextView
+                android:id="@+id/text_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="5dp" />
+        </RelativeLayout>
+
+        <ListView
+            android:id="@+id/list_set_hour"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical" >
+        </ListView>
+
+        <ListView
+            android:id="@+id/list_set_minute"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical" >
+        </ListView>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:src="@drawable/v_separator_line"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/relative_title"
+            android:orientation="vertical" >
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" >
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:background="@drawable/row_backgroud">
 
-                <RelativeLayout
-                    android:id="@+id/relative_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="1dp"
-                    android:background="@drawable/ic_indicator_on">
-
-                    <ImageView
-                        android:id="@+id/image_title"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_alignParentLeft="true"
-                        android:src="@drawable/ic_alarm_lin" />
-
-                    <TextView
-                        android:id="@+id/text_alarm_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_toRightOf="@+id/image_title"
-                        android:text="@string/app_name" />
-
-                    <TextView
-                        android:id="@+id/text_date"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="5dp" />
-                </RelativeLayout>
-
-                <LinearLayout
+                <com.wisesean.heartbeat.dslv.SlideCutListView
+                    android:id="@+id/slideCutListView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_alignParentLeft="true"
-                    android:layout_below="@+id/relative_title"
-                    android:orientation="vertical" >
+                    android:listSelector="@android:color/transparent"
+                    android:divider="@drawable/reader_item_divider"
+                    android:cacheColorHint="@android:color/transparent">
+                </com.wisesean.heartbeat.dslv.SlideCutListView>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0"
-                        android:orientation="vertical" >
-                    </LinearLayout>
+                <ListView
+                    android:id="@+id/listView_alarm_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"/>
+            </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:background="@drawable/row_backgroud">
-
-                        <com.wisesean.heartbeat.dslv.SlideCutListView
-                            android:id="@+id/slideCutListView"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:listSelector="@android:color/transparent"
-                            android:divider="@drawable/reader_item_divider"
-                            android:cacheColorHint="@android:color/transparent">
-                        </com.wisesean.heartbeat.dslv.SlideCutListView>
-
-                        <ListView
-                            android:id="@+id/listView_alarm_list"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"/>
-                    </LinearLayout>
-
-                    <ImageButton
-                        android:id="@+id/alerm_btn_add"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_clock_add_alarm_selected"
-                        android:onClick="addAlarm"/>
-                </LinearLayout>
-            </RelativeLayout>
-        </FrameLayout>
+            <ImageButton
+                android:id="@+id/alerm_btn_add"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_clock_add_alarm_selected"
+                android:onClick="addAlarm"/>
+        </LinearLayout>
     </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"></LinearLayout>
 
 </FrameLayout>

@@ -25,14 +25,14 @@ public class Alarms {
     // This string is used to indicate a silent alarm in the db.
     public static final String ALARM_ALERT_SILENT = "silent";
 	
-	public static long addAlarm(Context context,Alarm alarm) {
+	public static Object[] addAlarm(Context context,Alarm alarm) {
         ContentValues values = createContentValues(alarm);
         Uri uri = context.getContentResolver().insert(Alarm.Columns.CONTENT_URI, values);
         alarm.id = (int) ContentUris.parseId(uri);
 
         long timeInMillis = calculateAlarm(alarm);
         setNextAlert(context);
-        return timeInMillis;
+        return new Object[] { alarm.id,timeInMillis };
 	}
 	
 	public static void deleteAlarm(Context context, int alarmId) {
@@ -116,7 +116,6 @@ public class Alarms {
     /**
      * Disables alert in AlarmManger and StatusBar.
      *
-     * @param id Alarm ID.
      */
     static void disableAlert(Context context) {
         AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);

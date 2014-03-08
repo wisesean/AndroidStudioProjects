@@ -13,7 +13,6 @@ public class AalarmReceive extends BroadcastReceiver {
 		    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		    context.startActivity(i);
 		}
-
 	}
 
 }
