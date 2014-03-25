@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Parcel;
+import android.text.format.DateFormat;
 
 public class Alarms {
 	public static final String ALARM_ALERT_ACTION = "com.foxmail.wisesean.ALARM_ALERT";
@@ -21,9 +22,16 @@ public class Alarms {
     // AlarmManagerService to avoid a ClassNotFoundException when filling in
     // the Intent extras.
     public static final String ALARM_RAW_DATA = "intent.extra.alarm_raw";
+
+    // This string is used when passing an Alarm object through an intent.
+    public static final String ALARM_INTENT_EXTRA = "intent.extra.alarm";
     
     // This string is used to indicate a silent alarm in the db.
     public static final String ALARM_ALERT_SILENT = "silent";
+
+    private final static String M12 = "h:mm aa";
+    // Shared with DigitalClock
+    final static String M24 = "kk:mm";
 	
 	public static Object[] addAlarm(Context context,Alarm alarm) {
         ContentValues values = createContentValues(alarm);
@@ -224,6 +232,25 @@ public class Alarms {
         int addDays = daysOfWeek.getNextAlarm(c);
         if (addDays > 0) c.add(Calendar.DAY_OF_WEEK, addDays);
         return c;
+    }
+
+    static String formatTime(final Context context, int hour, int minute,
+                             Alarm.DaysOfWeek daysOfWeek) {
+        Calendar c = calculateAlarm(hour, minute, daysOfWeek);
+        return formatTime(context, c);
+    }
+
+    /* used by AlarmAlert */
+    static String formatTime(final Context context, Calendar c) {
+        String format = get24HourMode(context) ? M24 : M12;
+        return (c == null) ? "" : (String) DateFormat.format(format, c);
+    }
+
+    /**
+     * @return true if clock is set to 24-hour mode
+     */
+    public static boolean get24HourMode(final Context context) {
+        return android.text.format.DateFormat.is24HourFormat(context);
     }
 	
 	public static ContentValues createContentValues(Alarm alarm) {

@@ -19,16 +19,16 @@
             android:authorities="com.wisesean.heartbeat.alarm"
             android:exported="false" />
 
-        <activity android:name=".ActivityOne"
+        <activity android:name=".HeartBeatMainActivity"
             android:theme="@style/AppTheme.Two">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"></action>
                 <category android:name="android.intent.category.LAUNCHER"></category>
             </intent-filter>
         </activity>
-        <activity android:name=".AlarmActivity"></activity>
+        <activity android:name=".AlarmAlert"></activity>
         <activity android:name=".SetAlarm"></activity>
-        <receiver android:name=".AalarmReceive">
+        <receiver android:name=".AalarmReceiver">
             <intent-filter>
                 <action android:name="com.foxmail.wisesean.ALARM_ALERT" />
             </intent-filter>
